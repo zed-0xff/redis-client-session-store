@@ -5,7 +5,7 @@ require 'redis-client'
 # Redis session storage for Rails, and for Rails only. Derived from
 # the MemCacheStore code, simply dropping in Redis instead.
 class RedisSessionStore < ActionDispatch::Session::AbstractSecureStore
-  VERSION = '0.11.5'
+  VERSION = '0.12'
   # Rails 3.1 and beyond defines the constant elsewhere
   unless defined?(ENV_SESSION_OPTIONS_KEY)
     ENV_SESSION_OPTIONS_KEY = if Rack.release.split('.').first.to_i > 1
@@ -29,7 +29,7 @@ class RedisSessionStore < ActionDispatch::Session::AbstractSecureStore
   #
   # ==== Examples
   #
-  #     Rails.application.config.session_store :redis_session_store,
+  #     Rails.application.config.session_store :redis_client_session_store,
   #       key: 'your_session_key',
   #       redis: {
   #         expire_after: 120.minutes,

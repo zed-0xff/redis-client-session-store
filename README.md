@@ -1,17 +1,11 @@
-# Redis Session Store
+# RedisClient Session Store
 
-[![Code Climate](https://codeclimate.com/github/roidrage/redis-session-store.svg)](https://codeclimate.com/github/roidrage/redis-session-store)
-[![Gem Version](https://badge.fury.io/rb/redis-session-store.svg)](http://badge.fury.io/rb/redis-session-store)
+[![Code Climate](https://codeclimate.com/github/zed-0xff/redis-client-session-store.svg)](https://codeclimate.com/github/zed-0xff/redis-client-session-store)
+[![Gem Version](https://badge.fury.io/rb/redis-client-session-store.svg)](http://badge.fury.io/rb/redis-client-session-store)
 
-A simple Redis-based session store for Rails.  But why, you ask,
-when there's [redis-store](http://github.com/jodosha/redis-store/)?
-redis-store is a one-size-fits-all solution, and I found it not to work
-properly with Rails, mostly due to a problem that seemed to lie in
-Rack's `Abstract::ID` class. I wanted something that worked, so I
-blatantly stole the code from Rails' `MemCacheStore` and turned it
-into a Redis version. No support for fancy stuff like distributed
-storage across several Redis instances. Feel free to add what you
-see fit.
+A fork of [redis-session-store](https://github.com/roidrage/redis-session-store)
+using low-level RESP3 wrapper [redis-client](https://github.com/redis-rb/redis-client)
+instead of idiomatic [redis](https://github.com/redis/redis-rb).
 
 This library doesn't offer anything related to caching, and is
 only suitable for Rails applications. For other frameworks or
@@ -23,16 +17,16 @@ drop-in support for caching, check out
 For Rails 3+, adding this to your `Gemfile` will do the trick.
 
 ``` ruby
-gem 'redis-session-store'
+gem 'redis-client-session-store'
 ```
 
 ## Configuration
 
-See `lib/redis-session-store.rb` for a list of valid options.
+See `lib/redis-client-session-store.rb` for a list of valid options.
 In your Rails app, throw in an initializer with the following contents:
 
 ``` ruby
-Rails.application.config.session_store :redis_session_store,
+Rails.application.config.session_store :redis_client_session_store,
   key: 'your_session_key',
   redis: {
     expire_after: 120.minutes,  # cookie expiration
@@ -48,7 +42,7 @@ If you want to handle cases where Redis is unavailable, a custom
 callable handler may be provided as `on_redis_down`:
 
 ``` ruby
-Rails.application.config.session_store :redis_session_store,
+Rails.application.config.session_store :redis_client_session_store,
   # ... other options ...
   on_redis_down: ->(e, env, sid) { do_something_will_ya!(e) }
   redis: {
@@ -67,7 +61,7 @@ custom serializer:
 * `CustomClass` - You can just pass the constant name of any class that responds to `.load` and `.dump`
 
 ``` ruby
-Rails.application.config.session_store :redis_session_store,
+Rails.application.config.session_store :redis_client_session_store,
   # ... other options ...
   serializer: :hybrid
   redis: {
@@ -85,7 +79,7 @@ custom callable handler may be provided as `on_session_load_error` which
 will be given the error and the session ID.
 
 ``` ruby
-Rails.application.config.session_store :redis_session_store,
+Rails.application.config.session_store :redis_client_session_store,
   # ... other options ...
   on_session_load_error: ->(e, sid) { do_something_will_ya!(e) }
   redis: {
@@ -98,15 +92,6 @@ Rails.application.config.session_store :redis_session_store,
 ### Other notes
 
 It returns with_indifferent_access if ActiveSupport is defined.
-
-## Rails 2 Compatibility
-
-This gem is currently only compatible with Rails 3+.  If you need
-Rails 2 compatibility, be sure to pin to a lower version like so:
-
-``` ruby
-gem 'redis-session-store', '< 0.3'
-```
 
 ## Contributing, Authors, & License
 

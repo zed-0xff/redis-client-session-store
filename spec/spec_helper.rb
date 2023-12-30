@@ -1,6 +1,6 @@
 require 'simplecov'
 require_relative 'support'
-require 'redis-session-store'
+require 'redis-client-session-store'
 
 # from git submodule
 require_relative 'support/redis-client/test/support/servers'
