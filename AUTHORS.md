@@ -1,6 +1,7 @@
 Redis Session Store authors
 ===========================
 
+- Andrey "Zed" Zaikin
 - Ben Marini
 - Bill Ruddock
 - Dan Buch
